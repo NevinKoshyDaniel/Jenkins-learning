@@ -41,6 +41,12 @@ pipeline {
                 echo "Approval granted. Proceeding to production deployment."
             }
         }
+
+        stage('Deploy to Staging') {
+            steps {
+                echo "Successfully deploying the code to the staging environment: ${env.PRODUCTION_ENVIRONMENT}"
+            }
+        }
         
         stage('Deploy to Production') {
             steps {
@@ -49,3 +55,4 @@ pipeline {
         }
     }
 }
+
