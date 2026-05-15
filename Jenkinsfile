@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DIRECTORY_PATH = './local-environment/'
-        TESTING_ENVIRONMENT = 'Staging - SIT 753'
+        STAGING_ENVIRONMENT = 'Staging - SIT 753'
         PRODUCTION_ENVIRONMENT = 'Production - SIT 753' 
     }
 
@@ -11,43 +11,48 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Fetch the source code from the directory path specified by the environment variable: ${env.DIRECTORY_PATH}"
-                echo "Compile the code and generate any necessary artefacts"
+                echo "Running the build using NPM and node"
+                echo "Compiled the code and generate any necessary artefacts"
             }
         }
         
-        stage('Test') {
+        stage('Unit and Integration Test') {
             steps {
                 echo "Unit tests"
                 echo "Integration tests"
             }
         }
         
-        stage('Code Quality Check') {
+        stage('Code Quality Check - Sonarqube') {
             steps {
-                echo "Check the quality of the code"
+                echo "Checking the quality of the code"
+                echo "Running Sonarqube"
             }
         }
         
-        stage('Deploy') {
+        stage('Security Scan')
+        {
             steps {
-                echo "Deploy the application to a testing environment specified by the environment variable: ${env.TESTING_ENVIRONMENT}"
+                echo "Synk is initialized"
+                echo "Security scans are running"
             }
         }
-        
-        stage('Approval') {
+
+        stage('Deploy to staging') {
             steps {
-                echo "Simulating manual approval wait time..."
+                echo "Deploying on our AWS staging area"
+                echo "Successfully deploying the code to the staging environment: ${env.STAGING_ENVIRONMENT}"
+             }
+        }
+        
+        stage('Integrity checks ') {
+            steps {
+                echo "Simulating integrity checks in the staging area"
                 sleep time: 10, unit: 'SECONDS'
                 echo "Approval granted. Proceeding to production deployment."
             }
         }
-
-        stage('Deploy to Staging') {
-            steps {
-                echo "Successfully deploying the code to the staging environment: ${env.PRODUCTION_ENVIRONMENT}"
-            }
-        }
-        
+ 
         stage('Deploy to Production') {
             steps {
                 echo "Successfully deploying the code to the production environment: ${env.PRODUCTION_ENVIRONMENT}"
